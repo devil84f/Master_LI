@@ -1,27 +1,30 @@
-/*************************
- * Date:2024/10/11
-1）寄存器变量
-2）define定义常量/宏
-**************************/
+/***************************************************
+ * Date:2024/10/12
+1）指针：仅指向地址
+2）指针变量
+3）指针变量的大小
+***************************************************/
 
 #include <stdio.h>
-#define NUM 100 // 表示符常量
-#define ADD(x, y) ((x) + (y))
 
 int main()
 {
-    register int num = 3; // “建议” 3存储在寄存器中，到底放哪还是编译器说的算
+    int a = 10; // 向内存申请4个字节，存储10
+    &a; // 取地址操作符
+    printf("%d\n", a);
+    printf("%p\n", &a);
+    int* p = &a;
+    // p就是指针变量
 
-    printf("%d\n", NUM);
-    int n = NUM;
-    printf("%d\n", n);
-    int arr[NUM] = { 0 };
+    char ch = 'w';
+    char* pc = &ch;
+    printf("%p\n", &ch);
+    printf("%p\n", pc);
 
-    int a = 10;
-    int b = 20;
-    int c = ADD(a, b);
-    printf("%d\n", c);
-
-    printf("hello");
+    *p = 20;
+    printf("%d\n", a); // * ： 解引用，找到地址中的对象
+    
+    printf("%zu\n", sizeof(char*)); // 8
+    printf("%zu\n", sizeof(int*)); // 8
     return 0;
 }
