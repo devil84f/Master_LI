@@ -22,6 +22,7 @@
 Êä³ö£ºfalse
 /***************************************************/
 
+#include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 

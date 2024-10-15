@@ -1,49 +1,31 @@
 /***************************************************
- * Date:2024/10/14
-1）else匹配问题
-2）switch语句
+ * Date:2024/10/15
+1）库函数
+2）自定义函数
+3）形式参数/实际参数
 ***************************************************/
 
 #include <stdio.h>
+#include <string.h>
+
+void Swap(int *px, int *py)
+{
+    int z = *px;
+    *px = *py;
+    *py = z;
+}
 
 int main()
 {
-    int a = 0;
-    int b = 2;
-    if(a == 1)
-        if(b == 2)
-            printf("hh");
-    else
-        printf("haha");
-    
-    int day = 0;
-    scanf("%d", &day);
-    switch (day)
-    {
-    case 1:
-        printf("星期1\n");
-        break;
-    case 2:
-        printf("星期2\n");
-        break;
-    case 3:
-        printf("星期3\n");
-        break;
-    case 4:
-        printf("星期4\n");
-        break;
-    case 5:
-        printf("星期5\n");
-        break;
-    case 6:
-        printf("星期6\n");
-        break;
-    case 7:
-        printf("星期日\n");
-        break;
-    default:
-        printf("错误\n");
-        break;
-    }
+    int a = 10;
+    int b = 20;
+    char arr1[20] = { 0 };
+    char arr2[] = "hello";
+    strcpy(arr1, arr2); // 目标， 来源
+    printf("%s\n", arr1);
+
+    printf("交换前:a=%d b=%d\n", a, b);
+    Swap(&a, &b); // 实参/形参的区别
+    printf("交换后:a=%d b=%d\n", a, b);
     return 0;
 }
