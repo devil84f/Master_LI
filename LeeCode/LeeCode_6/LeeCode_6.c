@@ -69,11 +69,11 @@ char* convert(char* s, int numRows) {
     return result;  // 返回最终结果
 }
 
-// int main() {
-//     char s[] = "PAYPALISHIRING";
-//     int numRows = 3;
-//     char* result = convert(s, numRows);
-//     printf("%s\n", result);  // 输出: "PAHNAPLSIIGY"
-//     return 0;
-// }
+int main() {
+    char s[] = "PAYPALISHIRING";
+    int numRows = 3;
+    char* result = convert(s, numRows);
+    printf("%s\n", result);  // 输出: "PAHNAPLSIIGY"
+    return 0;
+}
 

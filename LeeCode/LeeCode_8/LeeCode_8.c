@@ -87,21 +87,21 @@ int myAtoi(char* str) {
     return (int)(result * sign);  // 返回最终的转换结果
 }
 
-// int main() {
-//     char str1[] = "42";
-//     printf("Result: %d\n", myAtoi(str1));  // 输出：42
+int main() {
+    char str1[] = "42";
+    printf("Result: %d\n", myAtoi(str1));  // 输出：42
 
-//     char str2[] = "   -42";
-//     printf("Result: %d\n", myAtoi(str2));  // 输出：-42
+    char str2[] = "   -42";
+    printf("Result: %d\n", myAtoi(str2));  // 输出：-42
 
-//     char str3[] = "4193 with words";
-//     printf("Result: %d\n", myAtoi(str3));  // 输出：4193
+    char str3[] = "4193 with words";
+    printf("Result: %d\n", myAtoi(str3));  // 输出：4193
 
-//     char str4[] = "words and 987";
-//     printf("Result: %d\n", myAtoi(str4));  // 输出：0
+    char str4[] = "words and 987";
+    printf("Result: %d\n", myAtoi(str4));  // 输出：0
 
-//     char str5[] = "-91283472332";
-//     printf("Result: %d\n", myAtoi(str5));  // 输出：-2147483648（溢出）
+    char str5[] = "-91283472332";
+    printf("Result: %d\n", myAtoi(str5));  // 输出：-2147483648（溢出）
 
-//     return 0;
-// }
+    return 0;
+}

@@ -51,15 +51,15 @@ int reverse(int x) {
     return reversed;
 }
 
-// int main() {
-//     int x = 123;
-//     printf("Reversed: %d\n", reverse(x));  // 输出：321
+int main() {
+    int x = 123;
+    printf("Reversed: %d\n", reverse(x));  // 输出：321
 
-//     x = -123;
-//     printf("Reversed: %d\n", reverse(x));  // 输出：-321
+    x = -123;
+    printf("Reversed: %d\n", reverse(x));  // 输出：-321
 
-//     x = 1534236469;
-//     printf("Reversed: %d\n", reverse(x));  // 输出：0（溢出）
+    x = 1534236469;
+    printf("Reversed: %d\n", reverse(x));  // 输出：0（溢出）
 
-//     return 0;
-// }
+    return 0;
+}
