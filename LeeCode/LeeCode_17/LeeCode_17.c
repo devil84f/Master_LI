@@ -1,63 +1,101 @@
 /***************************************************
- * Date:2024/10/19
- * 题目描述:
-给你一个长度为 n 的整数数组 nums 和 一个目标值 target。请你从 nums 中选出三个整数，
-使它们的和与 target 最接近。返回这三个数的和。
-假定每组输入只存在恰好一个解。
+ * Date:2024/10/20
+ * 题目描述:电话号码的字母组合
+给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
+电话键盘上的数字与字母的对应关系如下：
+2 -> "abc"
+3 -> "def"
+4 -> "ghi"
+5 -> "jkl"
+6 -> "mno"
+7 -> "pqrs"
+8 -> "tuv"
+9 -> "wxyz"
+给定一个数字字符串 digits，返回它能表示的所有字母组合。
 
 示例 1：
-输入：nums = [-1,2,1,-4], target = 1
-输出：2
-解释：与 target 最接近的和是 2 (-1 + 2 + 1 = 2)。
+输入：digits = "23"
+输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
 
 示例 2：
-输入：nums = [0,0,0], target = 1
-输出：0
-解释：与 target 最接近的和是 0（0 + 0 + 0 = 0）。
+输入：digits = ""
+输出：[]
+
+示例 3：
+输入：digits = "2"
+输出：["a", "b", "c"]
 /***************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
+#include <string.h>
 
-int compare(const void* a, const void* b) {
-    return (*(int*)a - *(int*)b);
+char* digitToChar(char digit) {
+    switch (digit) {
+        case '2': return "abc";
+        case '3': return "def";
+        case '4': return "ghi";
+        case '5': return "jkl";
+        case '6': return "mno";
+        case '7': return "pqrs";
+        case '8': return "tuv";
+        case '9': return "wxyz";
+        default: return "";
+    }
 }
 
-int threeSumClosest(int* nums, int numsSize, int target) {
-    qsort(nums, numsSize, sizeof(int), compare); // 排序
-
-    int closestSum = nums[0] + nums[1] + nums[2]; // 初始化最接近的和
-
-    for (int i = 0; i < numsSize - 2; i++) {
-        int left = i + 1;
-        int right = numsSize - 1;
-
-        while (left < right) {
-            int currentSum = nums[i] + nums[left] + nums[right];
-
-            // 更新最接近的和
-            if (abs(currentSum - target) < abs(closestSum - target)) {
-                closestSum = currentSum;
-            }
-
-            if (currentSum < target) {
-                left++;
-            } else if (currentSum > target) {
-                right--;
-            } else {
-                return currentSum; // 如果恰好等于目标值
+void backtrack(char*** result, char* combination, const char* digits, int index, int* returnSize, int* capacity) {
+    if (index == strlen(digits)) {
+        if (*returnSize >= *capacity) {
+            *capacity *= 2; // 扩展容量
+            *result = realloc(*result, sizeof(char*) * (*capacity)); // 修改传入的指针
+            if (*result == NULL) {
+                exit(EXIT_FAILURE); // 处理 realloc 失败
             }
         }
+        (*result)[*returnSize] = strdup(combination); // 复制组合到结果中
+        (*returnSize)++;
+        return;
     }
 
-    return closestSum;
+    char* letters = digitToChar(digits[index]);
+    for (int i = 0; letters[i] != '\0'; i++) {
+        combination[index] = letters[i]; // 添加当前字母
+        backtrack(result, combination, digits, index + 1, returnSize, capacity); // 递归
+    }
+    
+    combination[index] = '\0'; // 恢复组合状态
+}
+
+char** letterCombinations(char* digits, int* returnSize) {
+    if (strlen(digits) == 0) {
+        *returnSize = 0;
+        return NULL;
+    }
+
+    int capacity = 100; // 初始化容量
+    char** result = malloc(sizeof(char*) * capacity);
+    char* combination = malloc(sizeof(char) * (strlen(digits) + 1));
+    combination[strlen(digits)] = '\0'; // 终止符
+    *returnSize = 0;
+
+    backtrack(&result, combination, digits, 0, returnSize, &capacity);
+
+    free(combination); // 释放组合内存
+    return result;
 }
 
 int main() {
-    int nums[] = {-1, 2, 1, -4};
-    int target = 1;
-    int result = threeSumClosest(nums, sizeof(nums) / sizeof(nums[0]), target);
-    printf("The closest sum to target %d is %d\n", target, result); // 输出：2
+    char digits[] = "5678";
+    int returnSize;
+    char** combinations = letterCombinations(digits, &returnSize);
+
+    printf("Combinations:\n");
+    for (int i = 0; i < returnSize; i++) {
+        printf("%s\n", combinations[i]);
+        free(combinations[i]); // 释放内存
+    }
+
+    free(combinations);
     return 0;
 }
