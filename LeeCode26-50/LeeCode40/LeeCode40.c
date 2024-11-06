@@ -1,30 +1,29 @@
 /***************************************************
- * Date:2024/11/5
+ * Date:2024/11/6
  * 题目描述:
-给你一个 无重复元素的整数数组 candidates 和一个目标整数 target ，
-找出 candidates 中可以使数字和为目标数 target 的 所有不同组合 ，并以列表形式返回。
-你可以按 任意顺序返回这些组合。
-candidates 中的同一个数字可以无限制重复被选取。
-如果至少一个数字的被选数量不同，则两种组合是不同的。 
-对于给定的输入，保证和为 target 的不同组合数少于 150 个。
+给定一个候选人编号的集合 candidates 和一个目标数 target ，
+找出 candidates 中所有可以使数字和为 target 的组合。
+candidates 中的每个数字在每个组合中只能使用 一次 。
+注意：解集不能包含重复的组合。 
 
-示例 1：
-输入：candidates = [2,3,6,7], target = 7
-输出：[[2,2,3],[7]]
+示例 1:
+输入: candidates = [10,1,2,7,6,1,5], target = 8,
+输出:
+[[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]]
 
-示例 2：
-输入: candidates = [2,3,5], target = 8
-输出: [[2,2,2,2],[2,3,3],[3,5]]
-
-示例 3：
-输入: candidates = [2], target = 1
-输出: []
+示例 2:
+输入: candidates = [2,5,2,1,2], target = 5,
+输出:
+[[1,2,2],
+[5]]
 /***************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
 
-// 动态数组用于存储结果
 typedef struct {
     int** data;
     int* columnSizes;
@@ -42,7 +41,7 @@ ResultArray* createResultArray() {
     return result;
 }
 
-// 将组合添加到结果中
+// 添加组合到结果数组
 void addResult(ResultArray* result, int* combination, int length) {
     if (result->size >= result->capacity) {
         result->capacity *= 2;
@@ -57,40 +56,47 @@ void addResult(ResultArray* result, int* combination, int length) {
     result->size++;
 }
 
+// 比较函数，用于排序
+int compare(const void* a, const void* b) {
+    return *(int*)a - *(int*)b;
+}
+
 // 回溯函数
 void backtrack(int* candidates, int candidatesSize, int target, int* combination, int length, int start, ResultArray* result) {
     if (target == 0) {  // 找到一个组合
         addResult(result, combination, length);
         return;
     }
-    if (target < 0) return;  // 无效组合
+    if (target < 0) return;  // 当前组合无效
 
     for (int i = start; i < candidatesSize; i++) {
+        if (i > start && candidates[i] == candidates[i - 1]) continue;  // 跳过重复元素
         combination[length] = candidates[i];
-        backtrack(candidates, candidatesSize, target - candidates[i], combination, length + 1, i, result);
+        backtrack(candidates, candidatesSize, target - candidates[i], combination, length + 1, i + 1, result);
     }
 }
 
-int** combinationSum(int* candidates, int candidatesSize, int target, int* returnSize, int** returnColumnSizes) {
+// 主函数
+int** combinationSum2(int* candidates, int candidatesSize, int target, int* returnSize, int** returnColumnSizes) {
+    qsort(candidates, candidatesSize, sizeof(int), compare);  // 排序，方便去重
     ResultArray* result = createResultArray();
-    int* combination = (int*)malloc(target * sizeof(int));  // 存储单个组合
+    int* combination = (int*)malloc(target * sizeof(int));  // 用于存储当前组合
 
-    // 调用回溯函数
     backtrack(candidates, candidatesSize, target, combination, 0, 0, result);
 
-    // 返回结果
     *returnSize = result->size;
     *returnColumnSizes = result->columnSizes;
     return result->data;
 }
 
+// 测试代码
 int main() {
-    int candidates[] = {2, 3, 6, 7};
-    int target = 7;
+    int candidates[] = {10, 1, 2, 7, 6, 1, 5};
+    int target = 8;
     int returnSize;
     int* returnColumnSizes;
 
-    int** result = combinationSum(candidates, sizeof(candidates) / sizeof(candidates[0]), target, &returnSize, &returnColumnSizes);
+    int** result = combinationSum2(candidates, sizeof(candidates) / sizeof(candidates[0]), target, &returnSize, &returnColumnSizes);
 
     printf("组合总和的结果为：\n");
     for (int i = 0; i < returnSize; i++) {
