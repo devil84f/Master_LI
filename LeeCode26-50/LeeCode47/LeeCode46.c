@@ -1,18 +1,19 @@
 /***************************************************
- * Date:2024/11/10
+ * Date:2024/11/9
  * 题目描述:
-给定一个可包含重复数字的序列nums，按任意顺序返回所有不重复的全排列。
+给定一个不含重复数字的数组 nums ，返回其所有可能的全排列。你可以按任意顺序返回答案。
 
 示例 1：
-输入：nums = [1,1,2]
-输出：
-[[1,1,2],
- [1,2,1],
- [2,1,1]]
-
-示例 2：
 输入：nums = [1,2,3]
 输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+
+示例 2：
+输入：nums = [0,1]
+输出：[[0,1],[1,0]]
+
+示例 3：
+输入：nums = [1]
+输出：[[1]]
 /***************************************************/
 
 #include <stdio.h>
@@ -51,11 +52,6 @@ void addResult(ResultArray* result, int* permutation, int length) {
     result->size++;
 }
 
-// 比较函数，用于排序
-int cmp(const void* a, const void* b) {
-    return *(int*)a - *(int*)b;
-}
-
 // 递归函数生成排列
 void backtrack(int* nums, int numsSize, int* permutation, int level, bool* used, ResultArray* result) {
     if (level == numsSize) {  // 生成完整排列
@@ -64,9 +60,6 @@ void backtrack(int* nums, int numsSize, int* permutation, int level, bool* used,
     }
     
     for (int i = 0; i < numsSize; i++) {
-        // 跳过重复元素
-        if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) continue;
-        
         if (!used[i]) {  // 选择一个未使用的数字
             used[i] = true;
             permutation[level] = nums[i];
@@ -77,13 +70,10 @@ void backtrack(int* nums, int numsSize, int* permutation, int level, bool* used,
 }
 
 // 主函数
-int** permuteUnique(int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
-    ResultArray* result = createResultArray(100);  // 初始化结果数组
+int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
+    ResultArray* result = createResultArray(100); // 初始化结果数组
     int* permutation = (int*)malloc(numsSize * sizeof(int));
     bool* used = (bool*)calloc(numsSize, sizeof(bool));
-    
-    // 排序数组，便于去重处理
-    qsort(nums, numsSize, sizeof(int), cmp);
     
     backtrack(nums, numsSize, permutation, 0, used, result);
     
@@ -96,14 +86,14 @@ int** permuteUnique(int* nums, int numsSize, int* returnSize, int** returnColumn
 
 // 测试代码
 int main() {
-    int nums[] = {1, 1, 2};
+    int nums[] = {1, 2, 3};
     int numsSize = sizeof(nums) / sizeof(nums[0]);
     int returnSize;
     int* returnColumnSizes;
     
-    int** result = permuteUnique(nums, numsSize, &returnSize, &returnColumnSizes);
+    int** result = permute(nums, numsSize, &returnSize, &returnColumnSizes);
     
-    printf("所有不重复排列结果:\n");
+    printf("所有排列结果:\n");
     for (int i = 0; i < returnSize; i++) {
         printf("[");
         for (int j = 0; j < returnColumnSizes[i]; j++) {
