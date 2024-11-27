@@ -1,3 +1,13 @@
+/*
+ * @Author: devil84f 1204259355@qq.com
+ * @Date: 2024-11-12 11:14:10
+ * @LastEditors: devil84f 1204259355@qq.com
+ * @LastEditTime: 2024-11-27 15:46:56
+ * @FilePath: \Master_LI\C\Game_three\game.c
+ * @Description: 
+ * 
+ */
+ 
  #include "game.h"
 
  void InitBoard(char board[ROW][COL], int row, int col) {
